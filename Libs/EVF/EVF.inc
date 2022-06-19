@@ -102,12 +102,10 @@
  EVF_RemoveVehicle(vehicleid);
 
  Compatible with YSF Functions:
- GetVehicleColor(vehicleid,&color1,&color2);
- GetVehiclePaintjob(vehicleid);
+ 
  GetVehicleInterior(vehicleid);
  EVF::GetVehicleSpawnInfo(vehicleid,&Float:x,&Float:y,&Float:z,&Float:rotation,&worldid,&interiorid);
  EVF::SetVehicleSpawnInfo(vehicleid,Float:x,Float:y,Float:z,Float:rotation,worldid,interiorid);
- IsVehicleOccupied(vehicleid);
 
  Callbacks:
  OnVehicleCreated(vehicleid);                       //Called when a vehicle is created.
@@ -1992,46 +1990,10 @@ stock GetVehicleComponentPrice(componentid){
 	
 	#define GetVehicleInterior(%0)	GetVehiclePropertyValue((%0),e_VEHICLE_INTERIOR)
 	#define GetVehiclePaintjob(%0)	GetVehiclePropertyValue((%0),e_VEHICLE_PAINTJOB)
-
-	stock GetVehicleColor(vehicleid,&color1,&color2){
-		if(IsValidVehicle(vehicleid)){
-			color1 = GetVehiclePropertyValue(vehicleid,e_VEHICLE_COLOR_1);
-			color2 = GetVehiclePropertyValue(vehicleid,e_VEHICLE_COLOR_2);
-			return 1;
-		}
-		return 0;
-	}
-	
-	stock bool:IsVehicleOccupied(vehicleid){
-		EVF::Foreach(i){
-			if(IsPlayerInVehicle(i,vehicleid)){
-				return true;
-			}
-		}
-		return false;
-	}
 #endif
 
 #define EVF_GetVehicleInterior(%0)	GetVehiclePropertyValue((%0),e_VEHICLE_INTERIOR)
 #define EVF_GetVehiclePaintjob(%0)	GetVehiclePropertyValue((%0),e_VEHICLE_PAINTJOB)
-
-stock EVF::GetVehicleColor(vehicleid,&color1,&color2){
-	if(IsValidVehicle(vehicleid)){
-		color1 = GetVehiclePropertyValue(vehicleid,e_VEHICLE_COLOR_1);
-		color2 = GetVehiclePropertyValue(vehicleid,e_VEHICLE_COLOR_2);
-		return 1;
-	}
-	return 0;
-}
-
-stock bool:EVF::IsVehicleOccupied(vehicleid){
-	EVF::Foreach(i){
-		if(IsPlayerInVehicle(i,vehicleid)){
-			return true;
-		}
-	}
-	return false;
-}
 
 stock EVF::GetVehicleSpawnInfo(vehicleid,&Float:x,&Float:y,&Float:z,&Float:rotation,&worldid,&interiorid){
 	x = Float:GetVehiclePropertyValue(vehicleid,e_VEHICLE_SPAWN_X);
@@ -2753,7 +2715,7 @@ stock EVF::ChangeVehiclePaintjob(vehicleid,paintjobid){
 		SetVehiclePropertyValue(vehicleid,e_VEHICLE_PAINTJOB,paintjobid);
 		if(paintjobid == RESET_PAINTJOB_ID){
 			new color1,color2;
-			if(EVF::GetVehicleColor(vehicleid,color1,color2)){
+			if(GetVehicleColor(vehicleid,color1,color2)){
 				ChangeVehicleColor(vehicleid,color1,color2);
 			}
 		}
@@ -3401,7 +3363,7 @@ public OnVehicleSpawn(vehicleid){
 	SetVehiclePropertyValue(vehicleid,e_VEHICLE_PAINTJOB,RESET_PAINTJOB_ID);
 
 	new color1,color2;
-	if(EVF::GetVehicleColor(vehicleid,color1,color2)){
+	if(GetVehicleColor(vehicleid,color1,color2)){
 		ChangeVehicleColor(vehicleid,color1,color2);
 	}
 	
